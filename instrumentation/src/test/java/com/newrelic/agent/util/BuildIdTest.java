@@ -48,6 +48,16 @@ public class BuildIdTest {
     }
 
     @Test
+    public void getCustomBuildIdVariantMapEnabled() {
+        String customBuildId = "test build id";
+        BuildId.setCustomBuildId(customBuildId);
+        String buildId = BuildId.getBuildId("variant");
+        Assert.assertNotNull(buildId);
+        Assert.assertEquals(buildId, customBuildId);
+    }
+
+
+    @Test
     public void getBuildId() {
         String buildId = BuildId.getBuildId("test");
         Assert.assertNotNull(buildId);
@@ -86,4 +96,23 @@ public class BuildIdTest {
         variantBuildId = BuildId.getBuildId("variant");
         Assert.assertEquals(buildId, variantBuildId);
     }
+
+    @Test
+    public void getCustomBuildIdVariantMapDisabled() {
+        String buildId = BuildId.getDefaultBuildId();
+        String variantBuildId = BuildId.getBuildId("variant");
+        Assert.assertNotEquals(buildId, variantBuildId);
+
+        BuildId.invalidate();
+        BuildId.setVariantMapsEnabled(false);
+
+        String customBuildId = "test build id";
+        BuildId.setCustomBuildId(customBuildId);
+
+        buildId = BuildId.getDefaultBuildId();
+        variantBuildId = BuildId.getBuildId("variant");
+        Assert.assertEquals(buildId, variantBuildId);
+        Assert.assertNotEquals(buildId, customBuildId);
+    }
+
 }
