@@ -173,7 +173,7 @@ abstract class VariantAdapter {
             def uuid = objectFactory.property(String).convention(BuildId.getBuildId(variantName))
             def buildIdProvider = buildHelper.project.providers.fileContents(configTask.configMetadata).asText.orElse(uuid)
 
-            configTask.buildId.set('1234-5678-9101112-13')
+            configTask.buildId.set(buildIdProvider)
 
             configTask.onlyIf {
                 def configClass = configTask.sourceOutputDir.file(NewRelicConfigTask.CONFIG_CLASS).get().asFile
